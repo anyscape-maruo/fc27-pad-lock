@@ -22,7 +22,16 @@ foreach ($relative in $files) {
 $zipName = "FC27PadLock-v$version-win-x64.zip"
 $zipPath = Join-Path $OutputDirectory $zipName
 if (Test-Path -LiteralPath $zipPath) { throw 'ZIP already exists.' }
-Compress-Archive -LiteralPath $staging -DestinationPath $zipPath
+# Windows PowerShell 5.1 Compress-Archive writes backslash entry names.
+# Use explicit ZIP paths so the payload is canonical on every supported host.
+Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
+$archive = [IO.Compression.ZipFile]::Open($zipPath,[IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($relative in $files) {
+        $entryName = "$(Split-Path -Leaf $staging)/$relative"
+        [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive,(Join-Path $staging $relative),$entryName,[IO.Compression.CompressionLevel]::Optimal) | Out-Null
+    }
+} finally { $archive.Dispose() }
 $hashLines = @("$((Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant())  $zipName")
 foreach ($relative in @('build/FC27PadLock.exe','build/FC27PadLockControl.exe','build/FC27PadLockOverlay.exe','build/FC27PadLockMonitor.exe')) {
     $hashLines += "$((Get-FileHash -LiteralPath (Join-Path $staging $relative) -Algorithm SHA256).Hash.ToLowerInvariant())  $relative"
