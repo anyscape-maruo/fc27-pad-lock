@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "language": "ja",
+  "overlayOpacity": 0.94,
+  "overlayScale": 1,
+  "overlayMargin": 18,
+  "uiTheme": "dark",
+  "startPanelOnLogin": false,
+  "notificationsEnabled": true,
+  "warningCooldownSeconds": 30,
+  "toggleHotkey": "Ctrl+Alt+F12",
+  "overlayWidgets": ["protection", "keyboard", "mouse", "monitor", "warning", "shortcut"],
+  "extensionSettings": {}
+}

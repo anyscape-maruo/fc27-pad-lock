@@ -1,0 +1,12 @@
+build/*.exe
+build/*.json
+artifacts/
+installation.json
+activation.json
+status.json*
+error.txt
+*.lnk
+*.zip
+*.log
+*.pdb
+*.tmp

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FC27 Pad Lock application settings",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": {"type": "integer", "minimum": 1},
+    "language": {"enum": ["ja", "en"]},
+    "overlayOpacity": {"type": "number", "minimum": 0.25, "maximum": 1},
+    "overlayScale": {"type": "number", "minimum": 0.75, "maximum": 1.5},
+    "overlayMargin": {"type": "integer", "minimum": 8, "maximum": 80},
+    "uiTheme": {"enum": ["dark", "light", "system"]},
+    "startPanelOnLogin": {"type": "boolean"},
+    "notificationsEnabled": {"type": "boolean"},
+    "warningCooldownSeconds": {"type": "integer", "minimum": 5, "maximum": 300},
+    "toggleHotkey": {"type": "string", "description": "Two or more distinct modifiers from Ctrl/Alt/Shift/Win, followed by F1 through F24; validated and normalized at runtime."},
+    "overlayWidgets": {"type": "array", "uniqueItems": true, "items": {"enum": ["protection", "keyboard", "mouse", "monitor", "warning", "shortcut"]}},
+    "extensionSettings": {"type": "object", "additionalProperties": true}
+  }
+}
