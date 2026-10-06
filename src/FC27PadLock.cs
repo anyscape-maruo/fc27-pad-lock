@@ -79,6 +79,7 @@ namespace FC27PadLock {
         readonly Stopwatch elapsed=Stopwatch.StartNew();
         readonly int trialSeconds;
         readonly DateTime started=DateTime.UtcNow;
+        DateTime lastStateError=DateTime.MinValue;
         volatile uint[] gamePids=new uint[0];
         volatile bool stopping,hooksInstalled;
         uint threadId;
@@ -175,7 +176,7 @@ namespace FC27PadLock {
         void Monitor() { while(!stopping&&!finished.WaitOne(500)) { try { FindGame(); WriteState(); } catch {} } }
         void WriteState() {
             try {
-                var state=new { version="0.1.0-preview.1",settingsVersion=AppSettings.SchemaVersion,toggleHotkey=policy.ShortcutLabel,emergencyHotkey=ToggleShortcut.Emergency.Label,pid=Process.GetCurrentProcess().Id,startedUtc=started.ToString("o"),updatedUtc=DateTime.UtcNow.ToString("o"),armed=policy.Armed,stopped=finished.WaitOne(0),gamePids=gamePids,
+                var state=new { version=ProductVersion.Value,settingsVersion=AppSettings.SchemaVersion,toggleHotkey=policy.ShortcutLabel,emergencyHotkey=ToggleShortcut.Emergency.Label,pid=Process.GetCurrentProcess().Id,startedUtc=started.ToString("o"),updatedUtc=DateTime.UtcNow.ToString("o"),armed=policy.Armed,stopped=finished.WaitOne(0),gamePids=gamePids,
                     gameForeground=IsGame(Native.GetForegroundWindow()),hooksInstalled=hooksInstalled,hookThreadAlive=hookThread.IsAlive,hookHealth="registration and thread state only; silent hook removal cannot be excluded",
                     normalBlocked=Interlocked.Read(ref policy.NormalBlocked),injectedPassthrough=Interlocked.Read(ref policy.InjectedPassthrough),rawInputGuaranteed=false,actualMatchVerified=false,
                     trialSeconds=trialSeconds,remainingTrialSeconds=trialSeconds>0?(double?)Math.Max(0,trialSeconds-elapsed.Elapsed.TotalSeconds):null,
@@ -183,7 +184,9 @@ namespace FC27PadLock {
                 string path=Path.Combine(dir,"status.json"),temp=path+".tmp";
                 File.WriteAllText(temp,new JavaScriptSerializer().Serialize(state));
                 if(File.Exists(path)) File.Replace(temp,path,null); else File.Move(temp,path);
-            } catch {}
+            } catch(Exception error) {
+                if((DateTime.UtcNow-lastStateError).TotalSeconds>=30){lastStateError=DateTime.UtcNow;try{File.WriteAllText(Path.Combine(dir,"state-write-error.txt"),error.ToString());}catch{}}
+            }
         }
         public void Dispose() {
             RequestStop(); StopWatchdog();

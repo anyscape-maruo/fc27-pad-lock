@@ -1,0 +1,38 @@
+<!doctype html><html lang='ja'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>設定と拡張 | FC27 Pad Lock</title><style>+:root{color-scheme:light;--ink:#172b3a;--muted:#586c78;--line:#dae5ea;--accent:#006d77}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:#f3f7f8;color:var(--ink);font:16px/1.85 'Segoe UI','Yu Gothic UI',Meiryo,sans-serif}
+a{color:var(--accent);text-underline-offset:4px}a:hover{color:#00464d}a:focus-visible,summary:focus-visible{outline:3px solid #008f9c;outline-offset:5px}header{background:#112630;color:#fff;padding:24px max(24px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}header a{color:#bfe8e8}header strong{font-size:19px;letter-spacing:.12em}header small{display:block;color:#afc4cd;font-size:12px;letter-spacing:.05em}nav{display:flex;gap:22px;font-size:14px}
+.shell{max-width:1160px;margin:40px auto 64px;padding:0 24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}aside{position:sticky;top:24px;align-self:start;font-size:14px}aside p{font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--muted)}aside a{display:block;margin:0 0 10px;text-decoration:none;color:var(--muted);line-height:1.55}aside a:hover{color:var(--accent)}main{background:white;border:1px solid var(--line);border-radius:18px;padding:38px 44px;min-width:0}h1{font-size:32px;line-height:1.4;letter-spacing:-.02em;margin:0 0 28px}h2{font-size:22px;margin:42px 0 16px;padding-top:28px;border-top:1px solid var(--line);line-height:1.5}h3{font-size:18px;margin:28px 0 12px}p{margin:14px 0}li{margin:10px 0}strong{font-weight:700}table{border-collapse:collapse;width:100%;font-size:14px;margin:22px 0}th,td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f0f6f7}code{background:#edf3f5;border-radius:4px;padding:2px 5px;font: .9em Consolas,monospace;overflow-wrap:anywhere}pre{overflow:auto;background:#112630;color:#e0f0f3;padding:20px;border-radius:10px}pre code{background:transparent;color:inherit;padding:0}img{max-width:100%;height:auto}blockquote{margin:24px 0;border-left:4px solid #0097a3;background:#ecf8f8;padding:6px 22px;border-radius:0 8px 8px 0}.quick{background:#eaf7f6;border:1px solid #c6e7e4;border-radius:12px;padding:22px 26px;margin-bottom:28px}.quick strong{font-size:17px}.quick ol{margin-bottom:0;padding-left:22px}.button{display:inline-block;background:#006d77;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0}.button:hover{background:#004f58;color:white}footer{color:var(--muted);font-size:13px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:820px){header{padding:18px 22px;flex-wrap:wrap}nav{gap:16px}.shell{display:block;margin:24px auto;padding:0 16px}aside{position:static;margin-bottom:24px}aside a{display:inline-block;margin:0 16px 10px 0}main{padding:26px 22px;border-radius:12px}h1{font-size:28px}h2{font-size:21px}table{font-size:13px}th,td{padding:10px 8px}}
+</style></head><body><header><div><strong>PAD LOCK</strong><small>FC27 · 使い方・サポート</small></div><nav aria-label='ガイド'><a href='MANUAL.ja.html'>使い方</a><a href='https://github.com/anyscape-maruo/fc27-pad-lock/releases'>ダウンロード</a><a href='MANUAL.en.html'>English</a></nav></header><div class='shell'><aside aria-label='目次'><p>このページの内容</p><a href='#section-1'>アプリ画面と右クリック</a><a href='#section-2'>解除キー</a><a href='#section-3'>自動更新</a><a href='#section-4'>設定ファイル</a><a href='#section-5'>表示項目</a><a href='#section-6'>開発者向けの拡張点</a></aside><main><h1>設定と拡張</h1>
+<p>初期表示は簡易表示、不透明度50％（透過率50％）です。保存済みの不透明度とレイアウトは引き継ぎ、「表示を初期化」でこの初期値に戻せます。</p>
+<p>統合パネルの設定から、日本語／English、オーバーレイの位置・詳細／コンパクト・不透明度、表示項目、保護切り替えキーを変更できます。不透明度は25%で薄く、100%で不透明です。変更は自動保存され、再起動後も引き継ぎます。どの値でもクリックを受けない設定を維持します。</p>
+<h2 id="section-1">アプリ画面と右クリック</h2>
+<p>通知領域のアイコンを右クリックすると、専用のクイックパネルが開きます。現在の保護状態と解除キーを確認し、保護の有効化・一時解除、設定画面、診断保存へ移動できます。ダブルクリックでメイン画面を開きます。×で画面を閉じても通知領域に常駐し、保護は続きます。</p>
+<p>テーマはダーク・ライト・Windowsに合わせるから選べます。日本語と英語はその場で切り替わります。Windowsログイン時の自動起動、ログイン時に設定画面も表示するか、警告通知のON/OFFと通知間隔も変更できます。通知間隔は5～300秒です。通知を切っても保護と入力監視は続きます。</p>
+<p>オーバーレイは75～150%の大きさ、画面端から8～80ピクセルの距離を指定できます。表示中は変更が反映されます。「表示設定を初期値に戻す」は見た目の設定を戻し、解除キーや保護状態は変更しません。</p>
+<h2 id="section-2">解除キー</h2>
+<p>Ctrl・Alt・Shift・Winから異なる2つ以上の修飾キーとF1～F24を組み合わせます。例は <code>Ctrl+Alt+F10</code>、<code>Ctrl+Shift+F11</code> です。通常の文字キーを解除キーにして入力途中に保護が変わることを避けるため、機能キーを使います。</p>
+<p><strong>緊急解除のCtrl+Alt+F12は常に残ります。</strong> カスタムキーの自動リピートでは繰り返し切り替わりません。キー設定は設定保存後にガードが読み取り、状態ファイルに実際のキーを報告します。</p>
+<p>オーバーレイは設定希望値ではなく、ガードが報告した現在のキーを表示します。旧ガードや読取不調で希望と一致しない場合は反映待ちとして区別します。</p>
+<p>同じ組み合わせを別ソフトで使用している場合、動作が競合する可能性があるため実際の解除を確認してください。合わない場合は別の組み合わせを選べます。</p>
+<h2 id="section-3">自動更新</h2>
+<p>「常駐・通知」の自動更新は初期状態で有効です。起動時と6時間ごとに、このアプリのGitHub Releaseを確認します。「更新を確認」で手動確認もできます。GitHubへソースをコミットしただけでは更新対象になりません。配布ZIPと <code>SHA256SUMS.txt</code> を添付した新しいReleaseが必要です。</p>
+<p>プレビュー版は新しいプレビュー版と正式版、正式版は新しい正式版を確認します。ZIPのSHA256、配布ファイルと展開先を検証してから適用します。FC27が起動中ならゲーム終了を待ちます。更新前のファイルをバックアップし、失敗時は復元します。更新後はアプリを再起動して自動で保護を有効にします。不透明度などのユーザー設定はそのまま引き継ぎます。</p>
+<p>開発用チェックアウトでは自動更新を行いません。配布用SetupまたはポータブルZIPから導入したアプリで利用してください。更新確認やダウンロードの失敗は更新欄に表示され、現在の版の保護は続きます。</p>
+<h2 id="section-4">設定ファイル</h2>
+<p><code>%LOCALAPPDATA%\FC27PadLock\app-settings.json</code> にアプリ全体の設定、<code>overlay-settings.json</code> に表示ON/OFF・位置・レイアウトを保存します。ゲーム設定は変更しません。別プロセスの同時更新は同じユーザーの設定用Mutexと原子的なファイル置き換えで扱います。</p>
+<p>ソースの <code>config/app-settings.example.json</code> が例、<code>config/app-settings.schema.json</code> が形式の説明です。通常はパネルから変更してください。既存の未知キーは保持して、後から増えた設定を消さない設計です。</p>
+<h2 id="section-5">表示項目</h2>
+<ul>
+<li>protection：保護状態。</li>
+<li>keyboard：通常キーボードの遮断・通過。</li>
+<li>mouse：通常マウスの遮断・通過。</li>
+<li>monitor：入力監視の稼働状態。</li>
+<li>warning：最近の注意。</li>
+<li>shortcut：現在の解除キー・緊急解除キー。</li>
+</ul>
+<h2 id="section-6">開発者向けの拡張点</h2>
+<p>入力保護、入力観測、状態表示、統合UI、診断、設定・翻訳を別モジュールに分けています。状態JSONを読む外部ツールを作る場合、公開済みのフィールドだけを利用し、未知フィールドは無視してください。スキーマの世代はsettingsVersion／schemaVersionで扱います。</p>
+<p>言語追加はTextCatalog、表示追加はOverlayのwidget、入力分類追加はMonitor、解除条件追加はToggleShortcutへ分離して変更できます。ゲーム内部への到達を観測できない制限は、拡張時にも明示してください。</p>
+<p><code>extensionSettings</code> に名前空間ごとの追加設定を保存できます。ただし、任意のスクリプトやDLLを自動実行するプラグインローダーは実装していません。拡張コードはソース変更・ビルド・検証として追加します。</p>
+<footer>このマニュアルはネット接続なしで読めます。GitHubのリンク先はネット接続が必要です。</footer></main></div></body></html>

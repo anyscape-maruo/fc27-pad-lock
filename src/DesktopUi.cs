@@ -3,12 +3,15 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
 static class DesktopUi {
     [DllImport("dwmapi.dll")] static extern int DwmSetWindowAttribute(IntPtr window,int attribute,ref int value,int size);
+    [DllImport("uxtheme.dll",CharSet=CharSet.Unicode)] static extern int SetWindowTheme(IntPtr window,string subAppName,string subIdList);
+    static readonly ConditionalWeakTable<Control,object> themedHandles=new ConditionalWeakTable<Control,object>();
     public static Color Background,Card,Text,Muted,Border,Accent,Hover;
     public static bool Dark;
     public static void SetTheme(string theme){
@@ -24,12 +27,26 @@ static class DesktopUi {
     }
     public static GraphicsPath Rounded(Rectangle r,int radius){var p=new GraphicsPath();int d=radius*2;p.AddArc(r.X,r.Y,d,d,180,90);p.AddArc(r.Right-d,r.Y,d,d,270,90);p.AddArc(r.Right-d,r.Bottom-d,d,d,0,90);p.AddArc(r.X,r.Bottom-d,d,d,90,90);p.CloseFigure();return p;}
     public static void Apply(Control control){
+        if(control is Form||control is ScrollableControl){object marker;if(!themedHandles.TryGetValue(control,out marker)){themedHandles.Add(control,new object());control.HandleCreated+=delegate{ApplyNativeTheme(control);};}}
         control.ForeColor=Text;
         control.BackColor=control is Form?Background:control is CardPanel?Card:control.Parent==null?Background:control.Parent.BackColor;
         if(control is TextBox||control is ComboBox||control is CheckedListBox||control is NumericUpDown){control.BackColor=Card;control.ForeColor=Text;}
         if(control is Label&&Convert.ToString(control.Tag)=="muted")control.ForeColor=Muted;
         foreach(Control child in control.Controls)Apply(child);control.Invalidate();
-        if(control is Form&&control.IsHandleCreated)try{int dark=Dark?1:0;DwmSetWindowAttribute(control.Handle,20,ref dark,4);}catch{}
+        ApplyNativeTheme(control);
+    }
+    static int ColorRef(Color color){return color.R|(color.G<<8)|(color.B<<16);}
+    static void ApplyNativeTheme(Control control){
+        if(!control.IsHandleCreated)return;
+        bool highContrast=SystemInformation.HighContrast;
+        if(control is Form)try{
+            int dark=Dark&&!highContrast?1:0;
+            if(DwmSetWindowAttribute(control.Handle,20,ref dark,4)!=0)DwmSetWindowAttribute(control.Handle,19,ref dark,4);
+            // Windows 11 caption colors; older Windows safely ignores unsupported attributes.
+            int caption=highContrast?-1:ColorRef(Background),text=highContrast?-1:ColorRef(Text),border=highContrast?-1:ColorRef(Border);
+            DwmSetWindowAttribute(control.Handle,35,ref caption,4);DwmSetWindowAttribute(control.Handle,36,ref text,4);DwmSetWindowAttribute(control.Handle,34,ref border,4);
+        }catch(DllNotFoundException){}catch(EntryPointNotFoundException){}
+        if(control is ScrollableControl)try{SetWindowTheme(control.Handle,Dark&&!highContrast?"DarkMode_Explorer":null,null);}catch(DllNotFoundException){}catch(EntryPointNotFoundException){}
     }
     public static void SaveBitmap(Form form,string path){form.Show();Application.DoEvents();using(var bitmap=new Bitmap(form.Width,form.Height)){form.DrawToBitmap(bitmap,new Rectangle(Point.Empty,bitmap.Size));bitmap.Save(path,System.Drawing.Imaging.ImageFormat.Png);}form.Hide();}
     public static Point Clamp(Point point,Size size,Rectangle area){return new Point(Math.Max(area.Left,Math.Min(point.X,area.Right-size.Width)),Math.Max(area.Top,Math.Min(point.Y,area.Bottom-size.Height)));}

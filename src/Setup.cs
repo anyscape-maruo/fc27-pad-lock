@@ -13,16 +13,16 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 
 internal static class Setup {
-    internal const string Version="0.1.0-preview.1";
+    internal const string Version=ProductVersion.Value;
     const string Resource="FC27PadLock.Payload.zip";
     const string RegistryKey="Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\FC27PadLock";
     static readonly HashSet<string> Allowed=new HashSet<string>(StringComparer.OrdinalIgnoreCase){
-        "Start.cmd","Install.ps1","Uninstall.ps1","README.md","LICENSE","VERSION","CHANGELOG.md","SECURITY.md",
-        "build/FC27PadLock.exe","build/FC27PadLockControl.exe","build/FC27PadLockOverlay.exe","build/FC27PadLockMonitor.exe",
+        "Manual.html","docs/MANUAL.ja.html","docs/MANUAL.en.html","docs/SETTINGS.ja.html","docs/SETTINGS.en.html","docs/TROUBLESHOOTING.ja.html","docs/COMPATIBILITY.ja.html","docs/PRIVACY.ja.html","docs/OVERLAY.ja.html","docs/MONITOR.ja.html","docs/REPORTING.ja.html","Start.cmd","Install.ps1","Uninstall.ps1","README.md","LICENSE","VERSION","CHANGELOG.md","SECURITY.md",
+        "build/FC27PadLock.exe","build/FC27PadLockControl.exe","build/FC27PadLockOverlay.exe","build/FC27PadLockMonitor.exe","build/FC27PadLockUpdater.exe",
         "assets/PadLock.ico","assets/PadLock.png","docs/MANUAL.ja.md","docs/MANUAL.en.md","docs/TROUBLESHOOTING.ja.md","docs/TROUBLESHOOTING.en.md",
         "docs/COMPATIBILITY.ja.md","docs/COMPATIBILITY.en.md","docs/PRIVACY.ja.md","docs/PRIVACY.en.md","docs/OVERLAY.ja.md","docs/OVERLAY.en.md","docs/overlay-preview.png",
         "docs/SETTINGS.ja.md","docs/SETTINGS.en.md","docs/MONITOR.ja.md","docs/REPORTING.ja.md","config/app-settings.example.json","config/app-settings.schema.json"};
-    static readonly string[] Required={"build/FC27PadLock.exe","build/FC27PadLockControl.exe","build/FC27PadLockOverlay.exe","build/FC27PadLockMonitor.exe","Uninstall.ps1","LICENSE","VERSION"};
+    static readonly string[] Required={"build/FC27PadLock.exe","build/FC27PadLockControl.exe","build/FC27PadLockOverlay.exe","build/FC27PadLockMonitor.exe","build/FC27PadLockUpdater.exe","Uninstall.ps1","LICENSE","VERSION"};
     internal static string AppRoot {get{return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"FC27PadLock","App");}}
     internal static string Root {get{return Path.Combine(AppRoot,Version);}}
     static bool Under(string path,string root){return Path.GetFullPath(path).StartsWith(Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);}

@@ -1,0 +1,47 @@
+<!doctype html><html lang='ja'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>オーバーレイ・常駐表示 | FC27 Pad Lock</title><style>+:root{color-scheme:light;--ink:#172b3a;--muted:#586c78;--line:#dae5ea;--accent:#006d77}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:#f3f7f8;color:var(--ink);font:16px/1.85 'Segoe UI','Yu Gothic UI',Meiryo,sans-serif}
+a{color:var(--accent);text-underline-offset:4px}a:hover{color:#00464d}a:focus-visible,summary:focus-visible{outline:3px solid #008f9c;outline-offset:5px}header{background:#112630;color:#fff;padding:24px max(24px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}header a{color:#bfe8e8}header strong{font-size:19px;letter-spacing:.12em}header small{display:block;color:#afc4cd;font-size:12px;letter-spacing:.05em}nav{display:flex;gap:22px;font-size:14px}
+.shell{max-width:1160px;margin:40px auto 64px;padding:0 24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}aside{position:sticky;top:24px;align-self:start;font-size:14px}aside p{font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--muted)}aside a{display:block;margin:0 0 10px;text-decoration:none;color:var(--muted);line-height:1.55}aside a:hover{color:var(--accent)}main{background:white;border:1px solid var(--line);border-radius:18px;padding:38px 44px;min-width:0}h1{font-size:32px;line-height:1.4;letter-spacing:-.02em;margin:0 0 28px}h2{font-size:22px;margin:42px 0 16px;padding-top:28px;border-top:1px solid var(--line);line-height:1.5}h3{font-size:18px;margin:28px 0 12px}p{margin:14px 0}li{margin:10px 0}strong{font-weight:700}table{border-collapse:collapse;width:100%;font-size:14px;margin:22px 0}th,td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f0f6f7}code{background:#edf3f5;border-radius:4px;padding:2px 5px;font: .9em Consolas,monospace;overflow-wrap:anywhere}pre{overflow:auto;background:#112630;color:#e0f0f3;padding:20px;border-radius:10px}pre code{background:transparent;color:inherit;padding:0}img{max-width:100%;height:auto}blockquote{margin:24px 0;border-left:4px solid #0097a3;background:#ecf8f8;padding:6px 22px;border-radius:0 8px 8px 0}.quick{background:#eaf7f6;border:1px solid #c6e7e4;border-radius:12px;padding:22px 26px;margin-bottom:28px}.quick strong{font-size:17px}.quick ol{margin-bottom:0;padding-left:22px}.button{display:inline-block;background:#006d77;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0}.button:hover{background:#004f58;color:white}footer{color:var(--muted);font-size:13px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:820px){header{padding:18px 22px;flex-wrap:wrap}nav{gap:16px}.shell{display:block;margin:24px auto;padding:0 16px}aside{position:static;margin-bottom:24px}aside a{display:inline-block;margin:0 16px 10px 0}main{padding:26px 22px;border-radius:12px}h1{font-size:28px}h2{font-size:21px}table{font-size:13px}th,td{padding:10px 8px}}
+</style></head><body><header><div><strong>PAD LOCK</strong><small>FC27 · 使い方・サポート</small></div><nav aria-label='ガイド'><a href='MANUAL.ja.html'>使い方</a><a href='https://github.com/anyscape-maruo/fc27-pad-lock/releases'>ダウンロード</a><a href='MANUAL.en.html'>English</a></nav></header><div class='shell'><aside aria-label='目次'><p>このページの内容</p><a href='#section-1'>設定</a><a href='#section-2'>単独で追加する</a><a href='#section-3'>表示できる画面</a></aside><main><h1>オーバーレイ・常駐表示</h1>
+<p>FC27が前面にあるとき、画面の隅にガードの状態を表示します。初期設定は右上です。</p>
+<p><img src="overlay-preview.png" alt="状態表示の描画例" /></p>
+<p>この画像はアプリ自身の描画関数で作成した表示例です。ゲーム画面のスクリーンショットではありません。</p>
+<table>
+<thead>
+<tr>
+<th>表示</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>緑の「保護中」</td>
+<td>ガードの状態が有効で、フック登録・スレッド・状態ファイルの鮮度を確認できた。</td>
+</tr>
+<tr>
+<td>黄の「一時解除」</td>
+<td>ガードは常駐しているが保護を一時解除している。</td>
+</tr>
+<tr>
+<td>表示がない</td>
+<td>別アプリが前面、表示OFF、ガード停止、状態情報が古い・読めない、対象ゲーム窓が確認できない等。</td>
+</tr>
+</tbody>
+</table>
+<p>表示はゲーム内の入力機器や、すべての入力経路の遮断成功を示すものではありません。状態ファイルが5秒以上古いと表示を隠します。</p>
+<h2 id="section-1">設定</h2>
+<p>操作パネルの「ゲーム内に状態を表示」を切り替えます。位置は左上・右上・左下・右下から選びます。通知領域メニューからも表示を切り替えられます。</p>
+<p>設定は <code>%LOCALAPPDATA%\FC27PadLock\overlay-settings.json</code> に保存します。表示OFFや位置変更はガードの保護状態を変えません。</p>
+<h2 id="section-2">単独で追加する</h2>
+<p>既にガードが動いているとき、次のコマンドで状態表示だけを追加できます。単独モードでは専用アイコンの通知領域メニューから表示・位置を選べます。</p>
+<pre><code class="language-powershell">.\build\FC27PadLockOverlay.exe --standalone
+</code></pre>
+<p>表示だけを終了する場合：</p>
+<pre><code class="language-powershell">.\build\FC27PadLockOverlay.exe --quit
+</code></pre>
+<p>この終了操作は入力ガードを停止しません。通常のControlパネルからの「終了して保護解除」は、ガードとオーバーレイの両方を終了します。</p>
+<h2 id="section-3">表示できる画面</h2>
+<p>外部の最前面ウィンドウを使うため、ウィンドウ表示・ボーダーレス表示向けです。排他的フルスクリーンでは見えない場合があります。その場合はゲームの画面モードを確認してください。ゲームの描画処理にコードを注入する方式は使いません。</p>
+<p>オーバーレイはクリック透過で、表示時に操作フォーカスを奪わない設定です。表示が邪魔なら別の隅へ移すかOFFにしてください。</p>
+<footer>このマニュアルはネット接続なしで読めます。GitHubのリンク先はネット接続が必要です。</footer></main></div></body></html>

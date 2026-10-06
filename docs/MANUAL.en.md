@@ -6,9 +6,11 @@ This unofficial Windows x64 application guards ordinary keyboard/mouse input whi
 
 Run the Setup executable from the distribution. It installs per user without administrator rights. The startup and desktop shortcuts are optional. Alternatively, extract the complete portable ZIP and run `Start.cmd`; keep all files together.
 
-Open the app from its tray icon. Enable protection, or use the 30-second trial first in a menu. Use your controller from the first game screen. For the Steam game launch button, the app confirms the guard is ready before opening FC27.
+Protection starts automatically when the app starts, including at Windows sign-in. Check the dashboard for active protection, or use the 30-second trial first in a menu. Opening the panel of an already running app preserves a manual pause or stop. Exiting and restarting the app enables protection again. Use your controller from the first game screen. For the Steam game launch button, the app confirms the guard is ready before opening FC27.
 
 Alt+Tab remains available for other applications. Ctrl+Alt+F12 pauses/resumes protection and stays available as an emergency shortcut. A custom shortcut is configured under Input settings. Cursor motion or an Esc label alone does not prove input reached the game; check actual game actions.
+
+For reverse switching, press Alt, then Shift, then Tab. Pressing Shift first suppresses Shift, resulting in ordinary Alt+Tab.
 
 ## Settings and reports
 

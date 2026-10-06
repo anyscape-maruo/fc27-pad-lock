@@ -95,7 +95,7 @@ static class TextCatalog {
         ,{"shortcut",new[]{"解除キー","Release key"}}
         ,{"shortcut_pending",new[]{"設定した解除キーは反映待ち","Requested release key is pending"}}
         ,{"emergency",new[]{"緊急","Emergency"}}
-        ,{"opacity",new[]{"透過率","Opacity"}}
+        ,{"opacity",new[]{"不透明度","Opacity"}}
         ,{"tab_control",new[]{"操作・診断","Controls & diagnostics"}}
         ,{"tab_settings",new[]{"設定","Settings"}}
         ,{"open_panel",new[]{"操作パネルを開く","Open control panel"}}
@@ -112,6 +112,20 @@ static class TextCatalog {
         ,{"invalid_hotkey",new[]{"Ctrl/Alt/Shift/Winの2つ以上＋F1～F24を入力してください。","Enter at least two of Ctrl/Alt/Shift/Win plus F1–F24."}}
         ,{"status_unknown",new[]{"状態を確認できません","Status unavailable"}}
         ,{"status_stale",new[]{"状態の更新が遅れています","Status update is stale"}}
+        ,{"protection_starting",new[]{"保護を起動しています…","Starting protection…"}}
+        ,{"protection_start_failed",new[]{"保護の起動を確認できません","Protection startup unconfirmed"}}
+        ,{"guard_inactive",new[]{"入力ガードが動作していません","Input guard is inactive"}}
+        ,{"monitor_stop_pending",new[]{"入力監視の終了待ちです。少し待ってからやり直してください。","Waiting for the input monitor to stop. Try again shortly."}}
+        ,{"ui_auto_updates",new[]{"GitHubの新しいリリースへ自動更新する（FC27終了後）","Automatically install new GitHub releases after FC27 exits"}}
+        ,{"update_check_now",new[]{"更新を確認","Check for updates"}}
+        ,{"update_waiting",new[]{"起動後に更新を確認します","Checking for updates after startup"}}
+        ,{"update_checking",new[]{"更新を確認・ダウンロードしています…","Checking and downloading updates…"}}
+        ,{"update_current",new[]{"利用可能な新しいリリースはありません","No newer release is available"}}
+        ,{"update_wait_game",new[]{"更新を準備しました。FC27終了後に適用します","Update ready; it will install after FC27 exits"}}
+        ,{"update_installing",new[]{"更新を適用しています。完了後に再起動します","Installing update; the app will restart afterward"}}
+        ,{"update_disabled",new[]{"自動更新はオフです","Automatic updates are off"}}
+        ,{"update_development",new[]{"開発フォルダーでは自動更新しません","Automatic updates are disabled in a development folder"}}
+        ,{"update_failed",new[]{"更新できませんでした。次回の確認を待つか再確認してください","Update failed; wait for the next check or check again"}}
         ,{"trial_remaining",new[]{"試験：残り {0} 秒","Trial: {0} seconds remaining"}}
         ,{"current_shortcut",new[]{"現在の解除キー","Current release key"}}
         ,{"monitor_counts",new[]{"通常入力 {0}件 ／ チェーン遮断 {1}件 ／ 通過 {2}件","Normal input {0} / chain blocked {1} / passed {2}"}}
@@ -135,9 +149,6 @@ static class TextCatalog {
     public static string T(string key){return Translate(CurrentLanguage,key);}
     public static void SetLanguage(string code){if(!IsSupported(code))throw new ArgumentException("Supported languages: ja, en.");SetSetting("language",code);}
     internal static void SetSetting(string key,object value){
-        string mutexName="Local\\FC27PadLockSettings-"+WindowsIdentity.GetCurrent().User.Value;
-        using(var mutex=new Mutex(false,mutexName)){bool taken=false;try{try{taken=mutex.WaitOne(3000);}catch(AbandonedMutexException){taken=true;}if(!taken)throw new IOException("Language settings are busy.");
-            var d=new Dictionary<string,object>();if(File.Exists(SettingsPath)){var old=new JavaScriptSerializer().Deserialize<Dictionary<string,object>>(File.ReadAllText(SettingsPath));if(old==null)throw new IOException("Existing app settings are unreadable.");d=old;}d[key]=value;Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));string temp=SettingsPath+".tmp";File.WriteAllText(temp,new JavaScriptSerializer().Serialize(d));if(File.Exists(SettingsPath))File.Replace(temp,SettingsPath,null);else File.Move(temp,SettingsPath);lock(CacheLock){cachedLanguage=null;}
-        }finally{if(taken)mutex.ReleaseMutex();}}
+        AppSettings.Set(key,value);lock(CacheLock){cachedLanguage=null;}
     }
 }

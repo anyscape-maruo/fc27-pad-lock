@@ -8,7 +8,7 @@ using System.Text;
 using System.Web.Script.Serialization;
 
 static class DiagnosticReport {
-    public const string PublicVersion="0.1.0-preview.1";
+    public const string PublicVersion=ProductVersion.Value;
     static readonly string[] Widgets={"protection","keyboard","mouse","monitor","warning","shortcut"};
     static readonly HashSet<string> EventKinds=new HashSet<string>(new[]{"guard_status_unavailable","guard_stopped","guard_process_unconfirmed","guard_heartbeat_stale","guard_hook_registration_inactive","guard_armed","guard_paused","observer_observing","observer_registration_failed","observer_thread_stopped","normal_non_escape_chain_passed_guard_reported_armed","normal_chain_passed_guard_not_armed","injected_chain_passed_out_of_scope","raw_ll_mismatch_suspected"});
     static Dictionary<string,object> Parse(string json){try{return new JavaScriptSerializer().Deserialize<Dictionary<string,object>>(json)??new Dictionary<string,object>();}catch{return new Dictionary<string,object>();}}

@@ -1,0 +1,107 @@
+<!doctype html><html lang='ja'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>利用マニュアル | FC27 Pad Lock</title><style>+:root{color-scheme:light;--ink:#172b3a;--muted:#586c78;--line:#dae5ea;--accent:#006d77}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:#f3f7f8;color:var(--ink);font:16px/1.85 'Segoe UI','Yu Gothic UI',Meiryo,sans-serif}
+a{color:var(--accent);text-underline-offset:4px}a:hover{color:#00464d}a:focus-visible,summary:focus-visible{outline:3px solid #008f9c;outline-offset:5px}header{background:#112630;color:#fff;padding:24px max(24px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}header a{color:#bfe8e8}header strong{font-size:19px;letter-spacing:.12em}header small{display:block;color:#afc4cd;font-size:12px;letter-spacing:.05em}nav{display:flex;gap:22px;font-size:14px}
+.shell{max-width:1160px;margin:40px auto 64px;padding:0 24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}aside{position:sticky;top:24px;align-self:start;font-size:14px}aside p{font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--muted)}aside a{display:block;margin:0 0 10px;text-decoration:none;color:var(--muted);line-height:1.55}aside a:hover{color:var(--accent)}main{background:white;border:1px solid var(--line);border-radius:18px;padding:38px 44px;min-width:0}h1{font-size:32px;line-height:1.4;letter-spacing:-.02em;margin:0 0 28px}h2{font-size:22px;margin:42px 0 16px;padding-top:28px;border-top:1px solid var(--line);line-height:1.5}h3{font-size:18px;margin:28px 0 12px}p{margin:14px 0}li{margin:10px 0}strong{font-weight:700}table{border-collapse:collapse;width:100%;font-size:14px;margin:22px 0}th,td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f0f6f7}code{background:#edf3f5;border-radius:4px;padding:2px 5px;font: .9em Consolas,monospace;overflow-wrap:anywhere}pre{overflow:auto;background:#112630;color:#e0f0f3;padding:20px;border-radius:10px}pre code{background:transparent;color:inherit;padding:0}img{max-width:100%;height:auto}blockquote{margin:24px 0;border-left:4px solid #0097a3;background:#ecf8f8;padding:6px 22px;border-radius:0 8px 8px 0}.quick{background:#eaf7f6;border:1px solid #c6e7e4;border-radius:12px;padding:22px 26px;margin-bottom:28px}.quick strong{font-size:17px}.quick ol{margin-bottom:0;padding-left:22px}.button{display:inline-block;background:#006d77;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0}.button:hover{background:#004f58;color:white}footer{color:var(--muted);font-size:13px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:820px){header{padding:18px 22px;flex-wrap:wrap}nav{gap:16px}.shell{display:block;margin:24px auto;padding:0 16px}aside{position:static;margin-bottom:24px}aside a{display:inline-block;margin:0 16px 10px 0}main{padding:26px 22px;border-radius:12px}h1{font-size:28px}h2{font-size:21px}table{font-size:13px}th,td{padding:10px 8px}}
+</style></head><body><header><div><strong>PAD LOCK</strong><small>FC27 · 使い方・サポート</small></div><nav aria-label='ガイド'><a href='MANUAL.ja.html'>使い方</a><a href='https://github.com/anyscape-maruo/fc27-pad-lock/releases'>ダウンロード</a><a href='MANUAL.en.html'>English</a></nav></header><div class='shell'><aside aria-label='目次'><p>このページの内容</p><a href='#section-1'>目的と必要環境</a><a href='#section-2'>1. 展開と初回確認</a><a href='#section-3'>2. 試合を始める</a><a href='#section-4'>3. 操作パネル</a><a href='#section-5'>4. 他アプリを使う・入力を解除する</a><a href='#section-6'>5. Windows起動時に使う</a><a href='#section-8'>6. 更新・削除</a><a href='#section-10'>7. ハッシュ確認</a></aside><main><section class='quick'><strong>まずは、この3つだけ</strong><ol><li>FC27 Pad Lockをインストールする。</li><li>アプリを開く。保護は自動で有効になります。</li><li>FC27を起動し、コントローラーで遊ぶ。</li></ol></section><h1>利用マニュアル</h1>
+<h2 id="section-1">目的と必要環境</h2>
+<p>FC27が前面にあるとき、キーボード・マウスを触ってしまうことで操作が変わる問題を軽減するための入力ガードです。コントローラーを選択する機能や、FC27が認識していないコントローラーを認識させる機能はありません。</p>
+<p>対象の実行環境はWindows x64と.NET Framework 4.xです。Windows 11の実機で確認しています。ゲーム側で使いたいコントローラーを認識できる状態を用意してください。Steam版はパネルから起動できます。その他の配信版はゲームを通常の方法で起動し、ガードの対象プロセス名に一致する場合に保護します。その他の配信版は未検証です。</p>
+<h2 id="section-2">1. 展開と初回確認</h2>
+<p>通常の導入はReleaseの <code>FC27PadLockSetup.exe</code> を実行します。管理者権限不要でユーザー専用にインストールし、デスクトップとログイン時起動の登録を選べます。アプリ起動時に保護が自動で有効になります。以下はポータブルZIPを使う場合の手順です。</p>
+<ol>
+<li>Releaseの <code>FC27PadLock-v0.1.0-preview.3-win-x64.zip</code> をダウンロードします。</li>
+<li>「すべて展開」でフォルダーを展開します。ZIPの中から直接実行しないでください。</li>
+<li>フォルダー内の <code>Start.cmd</code> をダブルクリックします。直接 <code>build/FC27PadLockControl.exe</code> を開いても同じ操作パネルが表示されます。</li>
+<li>コントローラーを接続します。通常のFC27で認識されることを確認してください。</li>
+<li>FC27のメニューで「30秒試験」を使い、コントローラーが動くか、キーボード入力とマウスクリックが抑止されるか確認します。試験は30秒で自動終了します。</li>
+<li>問題なければ「保護を有効」を押します。この操作には自動終了の時間制限がありません。</li>
+</ol>
+<p>この版の実行ファイルは署名なしです。Windowsに警告が出る場合、配布元とハッシュを確認して判断してください。セキュリティソフトの無効化や、システム全体の設定変更は導入手順に含みません。</p>
+<h2 id="section-3">2. 試合を始める</h2>
+<ol>
+<li>アプリを起動し、パネルで「保護は有効」を確認します。一時解除や停止をしていた場合は「保護を有効」で再開します。</li>
+<li>Steam版はパネルの「FC27を起動」を押します。Steamの標準URIを使うため、Steamを別のドライブへインストールしていても固定パスには依存しません。</li>
+<li>最初の画面から使いたいコントローラーで操作し、Clubsなど目的のモードへ進みます。</li>
+<li>試合でコントローラーの選手操作が続くか確認します。キーボード・マウスにすでに割り当てられたセッションを、このツールがコントローラーに変更することはありません。</li>
+</ol>
+<p>ゲームが既に開いているとき、「FC27を起動」はゲームを再起動する操作ではありません。試合中にゲームを閉じる操作は行わず、必要なら試合終了後に通常の方法で終了してから起動し直してください。</p>
+<h2 id="section-4">3. 操作パネル</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>保護を有効</td>
+<td>期限なしの保護を起動、または再開します。実行中の30秒試験から切り替える場合は試験を終了して保護を起動します。</td>
+</tr>
+<tr>
+<td>一時解除</td>
+<td>ガードを常駐させたまま、入力抑止を解除します。</td>
+</tr>
+<tr>
+<td>保護を停止</td>
+<td>ガードを終了します。操作パネルは残ります。</td>
+</tr>
+<tr>
+<td>FC27を起動</td>
+<td>保護の稼働状態を確認してからSteam版FC27を開きます。</td>
+</tr>
+<tr>
+<td>FC27へ戻る</td>
+<td>ゲーム窓を前面にします。キーボード入力は送信しません。</td>
+</tr>
+<tr>
+<td>30秒試験</td>
+<td>保護を30秒間だけ有効にし、自動終了します。</td>
+</tr>
+<tr>
+<td>右上の×</td>
+<td>パネルだけ隠します。常駐は続きます。</td>
+</tr>
+</tbody>
+</table>
+<p>通知領域の盾アイコンをダブルクリックするとパネルを開けます。Windowsの通知領域に隠れている場合は「隠れているインジケーター」から探してください。</p>
+<p>新版の画面はダッシュボード／表示・オーバーレイ／入力・解除キー／常駐・通知／サポートに分かれています。アイコンの右クリックでは専用クイックパネルが開きます。テーマ・通知間隔・自動起動・オーバーレイ倍率と余白などは<a href="SETTINGS.ja.html">アプリ設定</a>を参照してください。設定は再起動後も引き継ぎます。</p>
+<p>専用アイコンはコントローラーと盾・鍵を組み合わせた青いアイコンです。パネルの「ゲーム内に状態を表示」でオーバーレイを切り替え、隣の選択欄で4隅から位置を選べます。初期設定は右上・簡易表示・不透明度50％です。オーバーレイを非表示にしても入力保護は変わりません。詳しくは<a href="OVERLAY.ja.html">オーバーレイ</a>を参照してください。</p>
+<p>「保護は有効」はガードの状態とフックの登録情報に基づく表示です。FC27内の入力機器や試合成功を読み取った表示ではありません。</p>
+<h2 id="section-5">4. 他アプリを使う・入力を解除する</h2>
+<ul>
+<li><strong>Alt+Tab / Alt+Shift+Tab</strong>：他アプリへ移ります。逆方向に切り替えるときはAlt→Shift→Tabの順で押してください。Shiftから押すとShiftが抑止され、通常のAlt+Tabになります。前面がFC27以外なら、そのアプリで通常入力を使えます。</li>
+<li><strong>Ctrl+Alt+F12</strong>：保護の有効／一時解除を切り替えます。</li>
+<li><strong>Windowsキーとその組み合わせ</strong>：退避用に通します。</li>
+<li>ゲーム内のポーズはコントローラーで操作してください。Escなど通常のキーは保護中に抑止されます。</li>
+</ul>
+<p>背景に見えているFC27の上へのクリック・スクロールも抑止します。他アプリで押し始めたキー・ボタンの解放は通し、FC27で抑止した押下の解放は抑止するよう追跡します。</p>
+<p>終了するときは通知領域を右クリックして「終了して保護解除」を選びます。パネルを閉じるだけでは保護を解除しません。</p>
+<p>アプリを終了してから起動し直すと、自動で保護を有効にします。常駐中にパネルを開き直す操作は、一時解除・停止の状態を維持します。起動に失敗した場合はエラーを表示し、「保護は有効」とは表示しません。</p>
+<h2 id="section-6">5. Windows起動時に使う</h2>
+<p>Setupで「Windowsログイン時に常駐する」を選ぶか、パネルの「常駐・通知」で自動起動を有効にしてください。パソコンにログインすると保護アプリが起動します。</p>
+<h3 id="section-7">ポータブル版で登録する場合</h3>
+<p>フォルダーを移動しない保管場所へ置いてから、フォルダーを開いてPowerShellで以下を実行します。この指定は今回のPowerShellプロセスだけに作用します。</p>
+<pre><code class="language-powershell">powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1
+</code></pre>
+<p>デスクトップに「FC27 パッド保護で起動」「FC27 パッド保護パネル」を作り、ログイン時の常駐を登録します。登録処理だけでは今のゲームを再起動しません。</p>
+<p>デスクトップのショートカットだけ必要なら、次のように自動起動を省略できます。</p>
+<pre><code class="language-powershell">powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -NoStartup
+</code></pre>
+<p>同名ショートカットが別の場所のアプリを参照している場合は上書きせず終了します。旧版を通常の方法で解除してから登録してください。</p>
+<h2 id="section-8">6. 更新・削除</h2>
+<p>配布版は初期設定で自動更新が有効です。起動時と6時間ごとにGitHub Releasesを確認し、新版を準備します。通常の自動更新はゲーム終了後に切り替わります。「常駐・通知」の更新欄から手動で確認することもできます。</p>
+<p>Setup版の削除はWindowsの「設定」→「アプリ」→「インストールされているアプリ」から「FC27 Pad Lock」を選んでください。</p>
+<h3 id="section-9">ポータブル版を手動で更新・削除する場合</h3>
+<p>更新は、新版を別フォルダーに展開→旧版で「終了して保護解除」→旧版の <code>Uninstall.ps1</code> で登録解除→新版を起動・確認→必要なら新版の <code>Install.ps1</code> で登録、の順です。同じWindowsユーザー・ログインセッションではガードを1つだけ動かします。</p>
+<pre><code class="language-powershell">powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Uninstall.ps1
+</code></pre>
+<p>解除スクリプトは同じユーザー・ログインセッションの常駐終了を待ち、今回のフォルダーを参照している登録済みショートカットだけ削除します。終了を確認できない場合はエラーとして止まります。ゲーム設定やセーブを復元・削除する操作はありません。</p>
+<p>登録解除後、展開フォルダーは手動で削除できます。状態ファイル <code>%LOCALAPPDATA%\FC27PadLock</code> は診断用に残ります。必要な記録がなければ、常駐終了後にこのフォルダーも手動で削除できます。</p>
+<h2 id="section-10">7. ハッシュ確認</h2>
+<p>Releaseの <code>SHA256SUMS.txt</code> と比較します。</p>
+<pre><code class="language-powershell">Get-FileHash .\FC27PadLock-v0.1.0-preview.3-win-x64.zip -Algorithm SHA256
+</code></pre>
+<p>困ったときは<a href="TROUBLESHOOTING.ja.html">トラブル対処</a>を参照してください。</p>
+<footer>このマニュアルはネット接続なしで読めます。GitHubのリンク先はネット接続が必要です。</footer></main></div></body></html>

@@ -9,7 +9,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build\build.ps1
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1
 ```
 
-生成物は `build/FC27PadLock.exe`、`build/FC27PadLockControl.exe`、`build/FC27PadLockOverlay.exe`、`build/FC27PadLockMonitor.exe` です。srcにC#コード、AssemblyInfo.csに公開版のメタデータがあります。専用アイコンはassetsに含まれ、4つのEXEに埋め込みます。通常の利用者はControlだけを開き、補助プロセスは自動管理されます。
+生成物は `build/FC27PadLock.exe`、`build/FC27PadLockControl.exe`、`build/FC27PadLockOverlay.exe`、`build/FC27PadLockMonitor.exe`、`build/FC27PadLockUpdater.exe` です。srcにC#コード、AssemblyInfo.csに公開版のメタデータがあります。専用アイコンはassetsに含まれ、5つのEXEに埋め込みます。通常の利用者はControlだけを開き、補助プロセスは自動管理されます。
 
 実行中のEXEは上書きできません。アプリを終了するか、`build/build.ps1 -OutputDirectory <別の出力先>` と `scripts/verify.ps1 -OutputDirectory <同じ出力先>` で隔離したビルドを使います。配布時は `scripts/package.ps1 -BuildDirectory <同じ出力先>` を指定できます。
 
@@ -42,3 +42,7 @@ artifactsにwin-x64 ZIPとSHA256SUMS.txtを作ります。許可リストにあ�
 メニューで30秒試験→コントローラー保持・キーボード・クリック・退避・期限終了を確認→期限なし保護でゲーム開始時からコントローラーを選択→オフライン試合やClubsの実動作を確認、の順で記録します。試合中の再起動や自動入力送信を検証の前提にしません。
 
 登録／解除の検証は、テスト用フォルダーのDesktopDirectory・StartupDirectoryを指定して実在のデスクトップを避けてください。終了通知を含む実動作確認は隔離したWindowsセッションやVMで行ってください。
+
+## 利用者向けHTMLマニュアル
+
+配布する利用者向け文書はHTMLです。リポジトリのMarkdownは編集用の原稿として保持しています。原稿を変更したら `python scripts/build-docs.py`（markdown-it-pyが必要）で再生成し、`Manual.html` と `docs/*.html` を更新してください。HTMLはCSSを内包し、オフラインで読めます。利用者にMarkdownを開かせる導線はありません。

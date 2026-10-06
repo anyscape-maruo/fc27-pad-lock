@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using Preferences = OverlayPreferences;
 
 // A read-only display helper. It never sends game input or guard control commands.
 class PadLockOverlay : Form {
@@ -22,9 +23,8 @@ class PadLockOverlay : Form {
     [DllImport("user32.dll")] static extern bool SetLayeredWindowAttributes(IntPtr handle,uint color,byte alpha,uint flags);
     [StructLayout(LayoutKind.Sequential)] struct Rect { public int Left,Top,Right,Bottom; }
     sealed class DisplayState { public int Pid; public int[] Games; public DateTime Started,Updated; public bool Armed,Hooks,ThreadAlive,Stopped; public string ToggleHotkey="Ctrl+Alt+F12",EmergencyHotkey="Ctrl+Alt+F12"; }
-    sealed class Preferences { public bool Visible=true; public string Position="top-right",Layout="detailed"; }
     sealed class MonitorState {public int Pid;public DateTime Updated;public DateTime? Started,WarningUtc;public string Health,WarningKind;public long? KeyboardBlocked,KeyboardPassed,MouseBlocked,MousePassed;}
-    sealed class ViewSettings {public double Opacity=0.94,Scale=1;public int Margin=18;public string DesiredHotkey="Ctrl+Alt+F12";public HashSet<string> Widgets=new HashSet<string>(WidgetNames);}
+    sealed class ViewSettings {public double Opacity=OverlayPreferences.DefaultOpacity,Scale=1;public int Margin=18;public string DesiredHotkey="Ctrl+Alt+F12";public HashSet<string> Widgets=new HashSet<string>(WidgetNames);}
     static readonly string[] WidgetNames={"protection","keyboard","mouse","monitor","warning","shortcut"};
     readonly string directory;
     readonly string settingsPath;
@@ -50,7 +50,7 @@ class PadLockOverlay : Form {
     static ViewSettings ParseViewSettings(string json){
         var result=new ViewSettings();try{
             var d=new JavaScriptSerializer().Deserialize<Dictionary<string,object>>(json);if(d==null)return result;object value;
-            result.Opacity=NumberSetting(d,"overlayOpacity",0.94,0.25,1);result.Scale=NumberSetting(d,"overlayScale",1,0.75,1.5);result.Margin=(int)Math.Round(NumberSetting(d,"overlayMargin",18,8,80));
+            result.Opacity=NumberSetting(d,"overlayOpacity",OverlayPreferences.DefaultOpacity,0.25,1);result.Scale=NumberSetting(d,"overlayScale",1,0.75,1.5);result.Margin=(int)Math.Round(NumberSetting(d,"overlayMargin",18,8,80));
             if(d.TryGetValue("toggleHotkey",out value)&&!string.IsNullOrWhiteSpace(Convert.ToString(value)))result.DesiredHotkey=Convert.ToString(value).Trim();
             if(d.TryGetValue("overlayWidgets",out value)&&value is System.Collections.IEnumerable&&!(value is string)){result.Widgets.Clear();foreach(object item in (System.Collections.IEnumerable)value){string name=Convert.ToString(item);if(Array.IndexOf(WidgetNames,name)>=0)result.Widgets.Add(name);}}
         }catch{}return result;
@@ -71,7 +71,7 @@ class PadLockOverlay : Form {
         switch(args[0]){case "--standalone":return "Standalone";case "--show":return "Show";case "--hide":return "Hide";case "--toggle":return "Toggle";case "--quit":return "Quit";default:return null;}
     }
     static Preferences ParsePreferences(string json) {
-        try{var d=new JavaScriptSerializer().Deserialize<Dictionary<string,object>>(json);if(d!=null&&d["visible"] is bool&&PositionEvent(Convert.ToString(d["position"]))!=null){object layout;string value=d.TryGetValue("layout",out layout)?Convert.ToString(layout):"detailed";return new Preferences{Visible=(bool)d["visible"],Position=Convert.ToString(d["position"]),Layout=value=="compact"?"compact":"detailed"};}}catch{}return new Preferences();
+        return Preferences.Parse(json);
     }
     static DisplayState ParseState(string json) {
         try {
@@ -97,7 +97,7 @@ class PadLockOverlay : Form {
         try{preferences=ParsePreferences(File.ReadAllText(settingsPath));}catch{preferences=new Preferences();}
         foreach(string name in Commands)signals.Add(name,new EventWaitHandle(false,EventResetMode.AutoReset,prefix+name));
         language=TextCatalog.CurrentLanguage;
-        FormBorderStyle=FormBorderStyle.None;ShowInTaskbar=false;TopMost=true;StartPosition=FormStartPosition.Manual;ClientSize=CardSize(preferences.Layout);BackColor=Color.FromArgb(19,25,35);Opacity=0.94;DoubleBuffered=true;
+        FormBorderStyle=FormBorderStyle.None;ShowInTaskbar=false;TopMost=true;StartPosition=FormStartPosition.Manual;ClientSize=CardSize(preferences.Layout);BackColor=Color.FromArgb(19,25,35);Opacity=OverlayPreferences.DefaultOpacity;DoubleBuffered=true;
         IntPtr hiddenHandle=Handle; // Create an invisible window so Close raises FormClosed even before first display.
         Apply(command);
         timer=new System.Windows.Forms.Timer{Interval=250};timer.Tick+=delegate{TickDisplay();};timer.Start();
@@ -227,8 +227,11 @@ class PadLockOverlay : Form {
         check("invalid position",ParseCommand(new[]{"--position","center"})==null);check("invalid args",ParseCommand(new[]{"--show","extra"})==null);
         check("separate prefix",Prefix("test")=="Local\\FC27PadLockOverlay-test-");
         check("default prefs",ParsePreferences("{}").Visible&&ParsePreferences("{}").Position=="top-right");
+        check("missing prefs use shared visible default",ParsePreferences(null).Visible&&ParsePreferences(null).Layout=="compact");
+        check("partial prefs preserve explicit visibility",!ParsePreferences("{\"visible\":false}").Visible);
+        check("invalid prefs preserve valid fields",!ParsePreferences("{\"visible\":false,\"position\":\"invalid\"}").Visible&&ParsePreferences("{\"position\":\"invalid\"}").Position=="top-right");
         var prefs=ParsePreferences("{\"visible\":false,\"position\":\"bottom-left\"}");check("stored prefs",!prefs.Visible&&prefs.Position=="bottom-left");
-        check("default detailed layout",prefs.Layout=="detailed");check("saved compact layout",ParsePreferences("{\"visible\":true,\"position\":\"top-left\",\"layout\":\"compact\"}").Layout=="compact");
+        check("default compact layout",prefs.Layout=="compact");check("saved detailed layout",ParsePreferences("{\"layout\":\"detailed\"}").Layout=="detailed");check("saved compact layout",ParsePreferences("{\"visible\":true,\"position\":\"top-left\",\"layout\":\"compact\"}").Layout=="compact");
         DateTime now=new DateTime(2026,10,5,0,0,0,DateTimeKind.Utc);var d=new Dictionary<string,object>{{"pid",123},{"gamePids",new[]{456}},{"armed",true},{"hooksInstalled",true},{"hookThreadAlive",true},{"stopped",false},{"startedUtc",now.AddSeconds(-2).ToString("o")},{"updatedUtc",now.ToString("o")}};var j=new JavaScriptSerializer();var s=ParseState(j.Serialize(d));
         check("valid state",s!=null&&s.Games[0]==456);check("malformed state",ParseState("{")==null);check("missing fields",ParseState("{}")==null);
         check("legacy actual shortcut fallback",s.ToggleHotkey=="Ctrl+Alt+F12"&&s.EmergencyHotkey=="Ctrl+Alt+F12");d["toggleHotkey"]="F8";check("actual shortcut from guard",ParseState(j.Serialize(d)).ToggleHotkey=="F8");
@@ -247,7 +250,7 @@ class PadLockOverlay : Form {
         parsed.Started=now.AddSeconds(-2);check("strict monitor reused PID rejected",!MonitorMatches(parsed,789,"FC27PadLockMonitor",now.AddSeconds(-1),false));
         check("recent warning",RecentWarning(parsed,now));check("old warning expired",!RecentWarning(parsed,now.AddSeconds(60)));check("warning friendly mapping",WarningKey("raw_ll_mismatch_suspected")=="warning_raw_mismatch");
         check("Japanese OS default",TextCatalog.DefaultLanguage("ja-JP")=="ja");check("other OS English default",TextCatalog.DefaultLanguage("de-DE")=="en");check("Japanese text",TextCatalog.Translate("ja","keyboard")=="キーボード");check("English text",TextCatalog.Translate("en","keyboard")=="Keyboard");check("supported locale list",TextCatalog.LanguageCodes.Length==2&&TextCatalog.IsSupported("ja")&&TextCatalog.IsSupported("en")&&!TextCatalog.IsSupported("fr"));
-        check("opacity default",ParseViewSettings("{}").Opacity==0.94);check("opacity lower clamp",ParseViewSettings("{\"overlayOpacity\":0.1}").Opacity==0.25);check("opacity upper clamp",ParseViewSettings("{\"overlayOpacity\":2}").Opacity==1);check("invalid opacity default",ParseViewSettings("{\"overlayOpacity\":null}").Opacity==0.94);
+        check("opacity default",ParseViewSettings("{}").Opacity==0.50);check("opacity lower clamp",ParseViewSettings("{\"overlayOpacity\":0.1}").Opacity==0.25);check("opacity upper clamp",ParseViewSettings("{\"overlayOpacity\":2}").Opacity==1);check("invalid opacity default",ParseViewSettings("{\"overlayOpacity\":null}").Opacity==0.50);
         check("default widget set",ParseViewSettings("{}").Widgets.Count==6);var selected=ParseViewSettings("{\"overlayWidgets\":[\"shortcut\",\"unknown\"]}");check("unknown widget ignored",selected.Widgets.Count==1&&selected.Widgets.Contains("shortcut"));check("empty widgets supported",ParseViewSettings("{\"overlayWidgets\":[]}").Widgets.Count==0);
         check("actual desired shortcut comparison",!PendingShortcut("ctrl + alt + f12","Ctrl+Alt+F12")&&PendingShortcut("F8","Ctrl+Alt+F12"));check("detailed height bounded",BodyHeight("detailed",new ViewSettings(),true)<=220);check("hidden widgets reduce height",BodyHeight("detailed",selected,false)<BodyHeight("detailed",new ViewSettings(),false));
         check("scale and margin defaults",ParseViewSettings("{}").Scale==1&&ParseViewSettings("{}").Margin==18);check("scale upper clamp",ParseViewSettings("{\"overlayScale\":4}").Scale==1.5);check("scale lower clamp",ParseViewSettings("{\"overlayScale\":0}").Scale==0.75);check("margin clamps",ParseViewSettings("{\"overlayMargin\":0}").Margin==8&&ParseViewSettings("{\"overlayMargin\":200}").Margin==80);check("scaled card dimensions",ScaledSize(new Size(338,202),1.5)==new Size(507,303));check("custom corner margin",Locate(bounds,new Size(184,66),"bottom-right",40)==new Point(676,694));
@@ -257,7 +260,7 @@ class PadLockOverlay : Form {
         // Diagnostics execute before IPC, WindowsIdentity, Process inspection and any window creation.
         if(args.Length>0&&args[0]=="--self-test"){if(args.Length!=2||!Path.IsPathRooted(args[1]))return 3;try{return SelfTest(args[1]);}catch{return 1;}}
         if(args.Length>0&&args[0]=="--render-preview"){
-            if(args.Length<2||args.Length>5||!Path.IsPathRooted(args[1]))return 3;string locale=args.Length>2?args[2]:TextCatalog.DefaultLanguage(CultureInfo.CurrentUICulture.Name),layout=args.Length>3?args[3]:"detailed";if(!TextCatalog.IsSupported(locale)||(layout!="detailed"&&layout!="compact")||(args.Length==5&&args[4]!="pending"))return 3;
+            if(args.Length<2||args.Length>5||!Path.IsPathRooted(args[1]))return 3;string locale=args.Length>2?args[2]:TextCatalog.DefaultLanguage(CultureInfo.CurrentUICulture.Name),layout=args.Length>3?args[3]:OverlayPreferences.DefaultLayout;if(!TextCatalog.IsSupported(locale)||(layout!="detailed"&&layout!="compact")||(args.Length==5&&args[4]!="pending"))return 3;
             try{bool pending=args.Length==5;var widgets=new ViewSettings();if(pending)widgets.DesiredHotkey="F8";Size size=new Size(layout=="compact"?218:CardWidth,BodyHeight(layout,widgets,pending));var sample=new MonitorState{KeyboardBlocked=137,KeyboardPassed=0,MouseBlocked=4098,MousePassed=64,Health="observing"};using(var bitmap=new Bitmap(size.Width,size.Height))using(var graphics=Graphics.FromImage(bitmap)){PaintCard(graphics,new Rectangle(Point.Empty,size),true,"monitor_observing",false,sample,layout,locale,DateTime.UtcNow,widgets);bitmap.Save(args[1],System.Drawing.Imaging.ImageFormat.Png);}return 0;}catch{return 1;}
         }
         string command=ParseCommand(args);if(command==null)return 3;

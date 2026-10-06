@@ -9,17 +9,17 @@ Windows版EA SPORTS FC 27で、コントローラーを使いたいときのキ�
 <img src="docs/app-preview.png" alt="日本語の統合アプリ画面の例" width="720">
 <img src="docs/tray-preview.png" alt="専用右クリックパネルの例" width="250">
 
-**初回公開版は `v0.1.0-preview.1` です。** 実機確認済みの範囲はWindows上のSteam版FC27、USB接続のDualSense Edge、メニュー操作です。全コントローラーや全試合条件での入力切り替え防止を確認したリリースではありません。
+**最新のプレビュー版は `v0.1.0-preview.3` です。** 実機確認済みの範囲はWindows上のSteam版FC27、USB接続のDualSense Edge、メニュー操作です。全コントローラーや全試合条件での入力切り替え防止を確認したリリースではありません。
 
 ## ダウンロード
 
-[GitHub Releases](https://github.com/anyscape-maruo/fc27-pad-lock/releases)から `FC27PadLockSetup.exe` をダウンロードして実行します。管理者権限不要でユーザー専用にインストールできます。ポータブル版は `FC27PadLock-v0.1.0-preview.1-win-x64.zip` をすべて展開してください。GitHubの「Source code」ZIPには実行ファイルが含まれません。
+[GitHub Releases](https://github.com/anyscape-maruo/fc27-pad-lock/releases)から `FC27PadLockSetup.exe` をダウンロードして実行します。管理者権限不要でユーザー専用にインストールできます。ポータブル版は `FC27PadLock-v0.1.0-preview.3-win-x64.zip` をすべて展開してください。GitHubの「Source code」ZIPには実行ファイルが含まれません。
 
 ## すぐ使う
 
 1. ZIPを全部展開し、普段使う場所にフォルダーを置きます。
 2. `Start.cmd` をダブルクリックします。
-3. 操作パネルの「保護を有効」を押します。最初は「30秒試験」でも確認できます。
+3. 起動すると保護が自動で有効になります。操作パネルで「保護は有効」を確認します。最初は「30秒試験」でも確認できます。
 4. Steam版なら「FC27を起動」を押し、ゲームの最初の画面からコントローラーで操作します。
 5. Discordなどへ移るときは **Alt+Tab**。保護を一時解除するときは **Ctrl+Alt+F12**。
 
@@ -29,14 +29,16 @@ Windows版EA SPORTS FC 27で、コントローラーを使いたいときのキ�
 
 ## 資料
 
-- [利用マニュアル](docs/MANUAL.ja.md)：導入、通常操作、自動起動、終了、更新、削除。
-- [トラブル対処](docs/TROUBLESHOOTING.ja.md)：入力できない、起動できない、保護が効かないとき。
-- [対応状況](docs/COMPATIBILITY.ja.md)：確認済み環境と未確認の組み合わせ。
-- [プライバシー](docs/PRIVACY.ja.md)：保存する情報と保存しない情報。
-- [オーバーレイ](docs/OVERLAY.ja.md)：表示、非表示、位置、単独の常駐。
-- [アプリ設定](docs/SETTINGS.ja.md) / [Settings in English](docs/SETTINGS.en.md)：テーマ、常駐・通知、表示・解除キー、拡張。
-- [エラー報告](docs/REPORTING.ja.md)：診断ZIPの保存とGitHubへの添付。
-- [English manual](docs/MANUAL.en.md)：導入と操作の英語版。
+配布フォルダーの **Manual.html** をダブルクリックすると、ブラウザでマニュアルを読めます。アプリのサポート画面からも開けます。以下のWebマニュアルもブラウザで読めます。
+
+- [利用マニュアル](https://anyscape-maruo.github.io/fc27-pad-lock/MANUAL.ja.html)：導入、通常操作、自動起動、終了、更新、削除。
+- [トラブル対処](https://anyscape-maruo.github.io/fc27-pad-lock/TROUBLESHOOTING.ja.html)：入力できない、起動できない、保護が効かないとき。
+- [対応状況](https://anyscape-maruo.github.io/fc27-pad-lock/COMPATIBILITY.ja.html)：確認済み環境と未確認の組み合わせ。
+- [プライバシー](https://anyscape-maruo.github.io/fc27-pad-lock/PRIVACY.ja.html)：保存する情報と保存しない情報。
+- [オーバーレイ](https://anyscape-maruo.github.io/fc27-pad-lock/OVERLAY.ja.html)：表示、非表示、位置、単独の常駐。
+- [アプリ設定](https://anyscape-maruo.github.io/fc27-pad-lock/SETTINGS.ja.html) / [Settings in English](https://anyscape-maruo.github.io/fc27-pad-lock/SETTINGS.en.html)：テーマ、常駐・通知、表示・解除キー、拡張。
+- [エラー報告](https://anyscape-maruo.github.io/fc27-pad-lock/REPORTING.ja.html)：診断ZIPの保存とGitHubへの添付。
+- [English manual](https://anyscape-maruo.github.io/fc27-pad-lock/MANUAL.en.html)：導入と操作の英語版。
 - [開発・検証](docs/DEVELOPMENT.ja.md)：ビルド、自己テスト、公開物の作成。
 - [更新履歴](CHANGELOG.md)、[変更提案](CONTRIBUTING.md)、[セキュリティ情報](SECURITY.md)。
 

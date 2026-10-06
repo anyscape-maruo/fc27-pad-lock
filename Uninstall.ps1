@@ -1,4 +1,4 @@
-﻿[CmdletBinding(SupportsShouldProcess=$true)]
+[CmdletBinding(SupportsShouldProcess=$true)]
 param()
 $ErrorActionPreference = 'Stop'
 $controlPath = Join-Path $PSScriptRoot 'build\FC27PadLockControl.exe'
@@ -77,8 +77,8 @@ if (Test-Path -LiteralPath $setupReceipt) {
         $registration=Get-ItemProperty -LiteralPath $registryPath
         if ($registration.InstallLocation -eq $resolvedRoot) { Remove-Item -LiteralPath $registryPath }
     }
-    $packageNames=@('Start.cmd','Install.ps1','Uninstall.ps1','README.md','LICENSE','VERSION','CHANGELOG.md','SECURITY.md',
-        'build/FC27PadLock.exe','build/FC27PadLockControl.exe','build/FC27PadLockOverlay.exe','build/FC27PadLockMonitor.exe',
+    $packageNames=@('Manual.html','docs/MANUAL.ja.html','docs/MANUAL.en.html','docs/SETTINGS.ja.html','docs/SETTINGS.en.html','docs/TROUBLESHOOTING.ja.html','docs/COMPATIBILITY.ja.html','docs/PRIVACY.ja.html','docs/OVERLAY.ja.html','docs/MONITOR.ja.html','docs/REPORTING.ja.html','Start.cmd','Install.ps1','Uninstall.ps1','README.md','LICENSE','VERSION','CHANGELOG.md','SECURITY.md',
+        'build/FC27PadLock.exe','build/FC27PadLockControl.exe','build/FC27PadLockOverlay.exe','build/FC27PadLockMonitor.exe','build/FC27PadLockUpdater.exe',
         'assets/PadLock.ico','assets/PadLock.png','config/app-settings.example.json','config/app-settings.schema.json',
         'docs/MANUAL.ja.md','docs/MANUAL.en.md','docs/TROUBLESHOOTING.ja.md','docs/COMPATIBILITY.ja.md','docs/PRIVACY.ja.md',
         'docs/OVERLAY.ja.md','docs/overlay-preview.png','docs/SETTINGS.ja.md','docs/SETTINGS.en.md','docs/MONITOR.ja.md','docs/REPORTING.ja.md')

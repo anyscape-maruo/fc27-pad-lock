@@ -12,6 +12,7 @@
     "uiTheme": {"enum": ["dark", "light", "system"]},
     "startPanelOnLogin": {"type": "boolean"},
     "notificationsEnabled": {"type": "boolean"},
+    "automaticUpdates": {"type": "boolean", "default": true, "description": "Check published GitHub Releases on startup and every six hours; apply after FC27 exits."},
     "warningCooldownSeconds": {"type": "integer", "minimum": 5, "maximum": 300},
     "toggleHotkey": {"type": "string", "description": "Two or more distinct modifiers from Ctrl/Alt/Shift/Win, followed by F1 through F24; validated and normalized at runtime."},
     "overlayWidgets": {"type": "array", "uniqueItems": true, "items": {"enum": ["protection", "keyboard", "mouse", "monitor", "warning", "shortcut"]}},

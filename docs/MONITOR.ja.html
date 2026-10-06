@@ -1,0 +1,51 @@
+<!doctype html><html lang='ja'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>FC27だけの入力監視 | FC27 Pad Lock</title><style>+:root{color-scheme:light;--ink:#172b3a;--muted:#586c78;--line:#dae5ea;--accent:#006d77}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:#f3f7f8;color:var(--ink);font:16px/1.85 'Segoe UI','Yu Gothic UI',Meiryo,sans-serif}
+a{color:var(--accent);text-underline-offset:4px}a:hover{color:#00464d}a:focus-visible,summary:focus-visible{outline:3px solid #008f9c;outline-offset:5px}header{background:#112630;color:#fff;padding:24px max(24px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}header a{color:#bfe8e8}header strong{font-size:19px;letter-spacing:.12em}header small{display:block;color:#afc4cd;font-size:12px;letter-spacing:.05em}nav{display:flex;gap:22px;font-size:14px}
+.shell{max-width:1160px;margin:40px auto 64px;padding:0 24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}aside{position:sticky;top:24px;align-self:start;font-size:14px}aside p{font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--muted)}aside a{display:block;margin:0 0 10px;text-decoration:none;color:var(--muted);line-height:1.55}aside a:hover{color:var(--accent)}main{background:white;border:1px solid var(--line);border-radius:18px;padding:38px 44px;min-width:0}h1{font-size:32px;line-height:1.4;letter-spacing:-.02em;margin:0 0 28px}h2{font-size:22px;margin:42px 0 16px;padding-top:28px;border-top:1px solid var(--line);line-height:1.5}h3{font-size:18px;margin:28px 0 12px}p{margin:14px 0}li{margin:10px 0}strong{font-weight:700}table{border-collapse:collapse;width:100%;font-size:14px;margin:22px 0}th,td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f0f6f7}code{background:#edf3f5;border-radius:4px;padding:2px 5px;font: .9em Consolas,monospace;overflow-wrap:anywhere}pre{overflow:auto;background:#112630;color:#e0f0f3;padding:20px;border-radius:10px}pre code{background:transparent;color:inherit;padding:0}img{max-width:100%;height:auto}blockquote{margin:24px 0;border-left:4px solid #0097a3;background:#ecf8f8;padding:6px 22px;border-radius:0 8px 8px 0}.quick{background:#eaf7f6;border:1px solid #c6e7e4;border-radius:12px;padding:22px 26px;margin-bottom:28px}.quick strong{font-size:17px}.quick ol{margin-bottom:0;padding-left:22px}.button{display:inline-block;background:#006d77;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0}.button:hover{background:#004f58;color:white}footer{color:var(--muted);font-size:13px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:820px){header{padding:18px 22px;flex-wrap:wrap}nav{gap:16px}.shell{display:block;margin:24px auto;padding:0 16px}aside{position:static;margin-bottom:24px}aside a{display:inline-block;margin:0 16px 10px 0}main{padding:26px 22px;border-radius:12px}h1{font-size:28px}h2{font-size:21px}table{font-size:13px}th,td{padding:10px 8px}}
+</style></head><body><header><div><strong>PAD LOCK</strong><small>FC27 · 使い方・サポート</small></div><nav aria-label='ガイド'><a href='MANUAL.ja.html'>使い方</a><a href='https://github.com/anyscape-maruo/fc27-pad-lock/releases'>ダウンロード</a><a href='MANUAL.en.html'>English</a></nav></header><div class='shell'><aside aria-label='目次'><p>このページの内容</p><a href='#section-1'>検知する内容</a><a href='#section-2'>分からないこと</a><a href='#section-3'>保存と通知</a></aside><main><h1>FC27だけの入力監視</h1>
+<p>監視は入力保護を変更しない独立モジュールです。通常は統合アプリが自動で起動・終了します。FC27・FC27_Trial・FC27_Showcaseが前面にある場合だけ、キーボードとマウスのイベント件数を集計します。他アプリの入力内容をログに保存しません。</p>
+<p>オーバーレイでは、観測開始からのキーボード／マウス別のチェーン遮断・通過件数、監視状態、最近の注意を確認できます。通常の退避キーや他アプリから押し続けたキーなど、意図した通過も件数に含まれます。</p>
+<h2 id="section-1">検知する内容</h2>
+<table>
+<thead>
+<tr>
+<th>分類</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ガード停止</td>
+<td>状態が停止を示す、または対応するガードプロセスの終了を確認した。</td>
+</tr>
+<tr>
+<td>状態更新の途絶</td>
+<td>正常な状態情報が5秒以上更新されない。ガードや保存処理の確認が必要。</td>
+</tr>
+<tr>
+<td>フック・スレッド停止</td>
+<td>登録状態や処理スレッドが停止を示す。</td>
+</tr>
+<tr>
+<td>通常入力の通過</td>
+<td>ガードが稼働を報告しているとき、通常の非退避入力がフックチェーンを通過した。ゲームが受け取った証明ではない。</td>
+</tr>
+<tr>
+<td>注入入力の通過</td>
+<td>リマップソフトなどの入力が通過した。現在のガードの対象外として情報を記録する。</td>
+</tr>
+<tr>
+<td>Raw Inputとフックの不一致</td>
+<td>Raw Inputは観測できたがフック側の件数がない等。観測経路の違い・監視不調の疑いで、失敗の確定ではない。</td>
+</tr>
+</tbody>
+</table>
+<p>通常のマウス移動の通過だけで警告を増やしません。ユーザーが許容したFC27のカーソル表示を、試合操作への切り替えと混同しません。</p>
+<h2 id="section-2">分からないこと</h2>
+<p>監視はフックチェーンが返した結果を観測し、自分では入力を止めません。遮断したソフトがこのガードか別ソフトかは確定できません。ゲームプロセスにコードを注入せず、ゲームのメモリーやメッセージキュー内部を読みません。選手操作や機器切り替えの実際の失敗を外部から確定する機能はありません。</p>
+<p><code>actualMatchFailureDetected</code> と <code>gameInternalArrivalKnown</code> はfalseです。「通過」「注意」は入力機器が切り替わったという確定表示ではありません。</p>
+<h2 id="section-3">保存と通知</h2>
+<p><code>%LOCALAPPDATA%\FC27PadLock</code> に <code>monitor-status.json</code> と最大1000行の <code>monitor-events.jsonl</code> を保存します。文字内容・キー番号・座標・デバイスIDは保存しません。状態の一時的な読取失敗は、最後の正常なハートビートの有効期限内で扱います。</p>
+<p>統合パネル・オーバーレイで状態を確認できます。独立監視メニューを開いた場合は、新しい警告を通知領域の通知でも案内します。Windowsの通知設定やゲーム中の通知抑止で、通知が表示されない場合があります。記録自体はローカルに残ります。</p>
+<footer>このマニュアルはネット接続なしで読めます。GitHubのリンク先はネット接続が必要です。</footer></main></div></body></html>
